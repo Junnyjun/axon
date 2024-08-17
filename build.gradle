@@ -1,72 +1,1 @@
-plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.9.24'
-    id 'org.jetbrains.kotlin.plugin.spring' version '1.9.24'
-    id 'org.springframework.boot' version '3.3.2'
-    id 'io.spring.dependency-management' version '1.1.6'
-    id 'com.netflix.dgs.codegen' version '6.2.1'
-    id 'org.graalvm.buildtools.native' version '0.10.2'
-    id 'org.springframework.cloud.contract' version '4.1.4'
-}
-
-group = 'git.io'
-version = '0.0.1-SNAPSHOT'
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-}
-
-repositories {
-    mavenCentral()
-}
-
-ext {
-    set('netflixDgsVersion', "9.0.4")
-    set('springCloudVersion', "2023.0.3")
-}
-
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
-    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
-    implementation 'com.netflix.graphql.dgs:graphql-dgs-spring-graphql-starter'
-    implementation 'org.jetbrains.kotlin:kotlin-reflect'
-    implementation 'org.springframework.data:spring-data-rest-hal-explorer'
-    runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.jetbrains.kotlin:kotlin-test-junit5'
-    testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
-    testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:${netflixDgsVersion}"
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-    }
-}
-
-kotlin {
-    compilerOptions {
-        freeCompilerArgs.addAll '-Xjsr305=strict'
-    }
-}
-
-generateJava {
-    schemaPaths = ["${projectDir}/src/main/resources/graphql-client"]
-    packageName = 'git.io.axon.codegen'
-    generateClient = true
-}
-
-contracts {
-}
-
-tasks.named('contractTest') {
-    useJUnitPlatform()
-}
-
-tasks.named('test') {
-    useJUnitPlatform()
-}
+plugins {    id 'org.jetbrains.kotlin.jvm' version '1.9.24'    id 'org.jetbrains.kotlin.plugin.spring' version '1.9.24'    id 'org.springframework.boot' version '3.3.2'    id 'io.spring.dependency-management' version '1.1.6'//    id 'com.netflix.dgs.codegen' version '6.2.1'    id 'org.graalvm.buildtools.native' version '0.10.2'    id 'org.springframework.cloud.contract' version '4.1.4'}group = 'git.io'version = '0.0.1-SNAPSHOT'java {    toolchain {        languageVersion = JavaLanguageVersion.of(21)    }}repositories {    mavenCentral()}ext {    set('netflixDgsVersion', "9.0.4")    set('springCloudVersion', "2023.0.3")}dependencies {    implementation 'org.springframework.boot:spring-boot-starter-actuator'    implementation 'org.springframework.boot:spring-boot-starter-data-rest'    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'//    implementation 'com.netflix.graphql.dgs:graphql-dgs-spring-graphql-starter'    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'    runtimeOnly 'com.h2database:h2'    implementation 'org.jetbrains.kotlin:kotlin-reflect'    implementation 'org.springframework.data:spring-data-rest-hal-explorer'    runtimeOnly 'io.micrometer:micrometer-registry-prometheus'    testImplementation 'org.springframework.boot:spring-boot-starter-test'    testImplementation 'org.jetbrains.kotlin:kotlin-test-junit5'    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'    // kotlin reflect    implementation 'org.jetbrains.kotlin:kotlin-reflect'    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core'}dependencyManagement {    imports {//        mavenBom "com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:${netflixDgsVersion}"        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"    }}kotlin {    compilerOptions {        freeCompilerArgs.addAll '-Xjsr305=strict'    }}//generateJava {//    schemaPaths = ["${projectDir}/src/main/resources/graphql-client"]//    packageName = 'git.io.axon.codegen'//    generateClient = true//}contracts {}tasks.named('contractTest') {    useJUnitPlatform()}tasks.named('test') {    useJUnitPlatform()}
